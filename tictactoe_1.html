@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<head>
+   <title></title>
+</head>
+<body>
+<style>
+#oneP {
+width: 80px;
+height: 25px;
+font-size: 10px;
+background-color: grey;
+border-radius: 12px;
+color: white;
+font-weight: bold;
+}
+table.grid {
+}
+input.gridd {
+width: 80px;
+height: 80px;
+ background-color: red; 
+font-size: 20px;
+font-weight: bold;
+color: white;
+border-color: grey;
+}
+</style>
+<p id="header">Player 1's Turn</p>
+<input type="button" id="oneP" value="Single Player" onclick="players(this.id)"/><br>
+<input type="button" id="oneP" value="Restart" onclick="restart()"/>
+
+
+<table class="grid">
+
+  <tr id="row1">
+	<td><input class="gridd" id="1" onclick="takeTurn(this.id)" type="button"/></td>
+	<td><input class="gridd" id="2" onclick="takeTurn(this.id)" type="button"/></td>
+        <td><input class="gridd" id="3" onclick="takeTurn(this.id)" type="button"/></td>
+  </tr>
+  <tr id="row2">
+	<td><input class="gridd" id="4" onclick="takeTurn(this.id)" type="button"/></td>
+	<td><input class="gridd" id="5" onclick="takeTurn(this.id)" type="button"/></td>
+        <td><input class="gridd" id="6" onclick="takeTurn(this.id)" type="button"/></td>
+  </tr>
+  <tr id="row3">
+	<td><input class="gridd" id="7" onclick="takeTurn(this.id)" type="button"/></td>
+	<td><input class="gridd" id="8" onclick="takeTurn(this.id)" type="button"/></td>
+        <td><input class="gridd" id="9" onclick="takeTurn(this.id)" type="button"/></td>
+  </tr>
+</table>
+<p id="winner"></p>
+
+
+<script>
+var compAI = false;
+var turnNumber = 0;
+var userTurn = true;
+var playerTurn = document.getElementById("header");
+box1 = document.getElementById("1");
+box2 = document.getElementById("2");
+box3 = document.getElementById("3");
+box4 = document.getElementById("4");
+box5 = document.getElementById("5");
+box6 = document.getElementById("6");
+box7 = document.getElementById("7");
+box8 = document.getElementById("8");
+box9 = document.getElementById("9");
+
+
+function players(id) {
+if (id == "oneP") {
+compAI = true;
+}
+document.getElementById("oneP").style.display = 'none';
+}
+
+
+function takeTurn(id) {
+document.getElementById("oneP").style.display = 'none';
+if (document.getElementById(id).value == "X" || document.getElementById(id).value == "O") 
+{return; }
+if (compAI == true) {
+checkForWin();
+AISelection(id);
+checkForWin();
+return;
+}
+else if(compAI == false) {
+if (userTurn == true) {
+document.getElementById(id).value = "X";
+userTurn = false;
+playerTurn.innerHTML = "Player 2's Turn";
+}
+else if (userTurn == false) {
+document.getElementById(id).value = "O";
+userTurn = true;
+playerTurn.innerHTML = "Player 1's Turn";
+}
+ checkForWin();
+}}
+
+
+function AISelection(id) {
+rand = Math.floor(Math.random() * 9) + 1;
+document.getElementById(id).value = "X";
+while (document.getElementById(rand).value !== "") {
+	rand = Math.floor(Math.random() * 9) + 1;
+}
+document.getElementById(rand).value = "O";
+}
+
+
+function checkForWin() {
+if(((box1.value == box2.value && box2.value == box3.value) && box1.value !== "") || ((box4.value == box5.value && box5.value == box6.value) && box4.value !== "") || ((box7.value == box8.value && box8.value == box9.value) && box7.value !== "")) {
+whichPlayer();
+clearAll();
+}
+else if(((box1.value == box4.value && box4.value == box7.value) && box1.value !== "") || ((box2.value == box5.value && box5.value == box8.value) && box8.value !== "") || ((box3.value == box6.value && box6.value == box9.value) && box3.value !== ""))
+{
+whichPlayer();
+clearAll();
+}
+else if((box1.value == box5.value && box5.value == box9.value) && box1.value !== "") {
+whichPlayer();
+clearAll();
+}
+else if((box3.value == box5.value && box5.value == box7.value) && box3.value !== "") {
+whichPlayer();
+clearAll();
+}
+}
+
+
+function whichPlayer(restart) {
+if(userTurn == false) {
+document.getElementById("winner").innerHTML = '<b style="color: blue;">Player 1 Wins<b>';
+document.getElementById("oneP").style.display = 'block'; }
+else if(userTurn == true) {
+document.getElementById("winner").innerHTML = '<b style="color: blue;">Player 2 Wins<b>';
+document.getElementById("oneP").style.display = 'block';
+}}
+
+
+function clearAll() {
+for(i = 1; i < 10; i++) {
+document.getElementById(i).value = "";
+}}
+
+function restart() {
+whichPlayer();
+clearAll();
+
+}
+
+
+</script>
+</body>
+</html>
